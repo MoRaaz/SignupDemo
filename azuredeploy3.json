@@ -78,10 +78,7 @@
                     "connectionstrings": [
                         {
                             "name": "storagekey",
-                            #"value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageaccountname')), '2021-08-01').keys[0].value]",
-                            #"value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('storageaccountname'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageaccountname')), '2021-08-01').keys[0].value)]",
-                            #"value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageaccountname'),';AccountKey=',concat(listKeys(variables('storageAccountId'),'2015-05-01-preview').key1))]",
-                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageaccountname'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageaccountname')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]",
+                            "ConnectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageaccountname'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageaccountname')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]",
                             "type": "Custom"
                         }                        
                     ]
