@@ -1,0 +1,82 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "deploymentname": {
+            "type": "string",
+            "defaultValue": "dev",
+            "metadata": {
+                "description": "Name of the Deployment"
+            }
+        },
+        "storageaccountname": {
+            "type": "string",
+            "defaultValue": "[concat('storage', parameters('deploymentname'),uniqueString(resourceGroup().id))]",
+            "metadata": {
+                "description": "Name of the storage account"
+            },
+            "minLength": "3",
+            "maxLength": "24"
+        },
+        "webappname": {
+            "type": "string",
+            "defaultValue": "[concat('wa-', parameters('deploymentname'),uniqueString(resourceGroup().id))]",
+            "metadata": {
+                "description": "Name of the web app"
+            },
+            "minLength": 2
+        }
+    },
+    "functions": [],
+    "variables": {},
+    "resources": [
+        {
+            "name": "[parameters('storageaccountname')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2021-04-01",
+            "tags": {
+                "displayName": "sasignupdemo"
+            },
+            "location": "[resourceGroup().location]",
+            "kind": "StorageV2",
+            "sku": {
+                "name": "Premium_LRS",
+                "tier": "Premium"
+            }
+        },
+        {
+            "name": "asp-signupdemo",
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2020-12-01",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "F1",
+                "capacity": 1
+            },
+            "tags": {
+                "displayName": "asp-signupdemo"
+            },
+            "properties": {
+                "name": "asp-signupdemo"
+            }
+        },
+        {
+            "name": "[parameters('webappname')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2020-12-01",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/asp-signupdemo')]": "Resource",
+                "displayName": "wa-signupdemo"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', 'asp-signupdemo')]"
+            ],
+            "properties": {
+                "name": "[parameters('webappname')]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', 'asp-signupdemo')]"
+            }
+        }
+    ],
+    "outputs": {}
+}
