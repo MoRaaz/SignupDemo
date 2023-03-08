@@ -78,14 +78,27 @@
                     "connectionstrings": [
                         {
                             "name": "storagekey",
-                            #"value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageaccountname')), '2021-08-01').keys[0].value]",
-                            #"value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('storageaccountname'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageaccountname')), '2021-08-01').keys[0].value)]",
-                            #"value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageaccountname'),';AccountKey=',concat(listKeys(variables('storageAccountId'),'2015-05-01-preview').key1))]",
                             "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageaccountname'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageaccountname')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]",
                             "type": "Custom"
                         }                        
+                    ],
+                    "appSettings": [
+                        {
+                            "name": "MESSAGE",
+                            "value": ""
+
+                        },
+                        {
+                            "name": "WEBSITE_RUN_FROM_PACKAGE",
+                            "value": "https://exflowdevreleasepkgs.blob.core.windows.net/demo/SignUpDemo.zip?sp=r&st=2023-02-28T11:55:50Z&se=2023-09-01T18:55:50Z&spr=https&sv=2021-06-08&sr=b&sig=YcjBvTrCAVQY99Wdj8UpymNkY4BraNLPqOaa5VeR9o8%3D"
+                        }
+                    ],
+                    "slotConfigNames": [
+                        {
+                            "appSettingNames": [ "MESSAGE" ]
+                        }
                     ]
-                    },             
+                },           
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', 'asp-signupdemo')]"
             }
         }
